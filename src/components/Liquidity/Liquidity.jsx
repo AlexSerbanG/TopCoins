@@ -1,95 +1,58 @@
 import * as React from 'react';
 import { useLatestCoins } from '../../hooks/useLatestCoins';
-import { ScatterChart, CartesianGrid, XAxis, YAxis, ZAxis, Legend, Scatter, ResponsiveContainer } from 'recharts';
-import { Tooltip } from '@material-ui/core';
+import { ScatterChart, CartesianGrid, XAxis, YAxis, ZAxis, Tooltip, Scatter, ResponsiveContainer } from 'recharts';
+import { CircularProgress } from '@material-ui/core';
 
-const data01 = [
-  {
-    "x": 100,
-    "y": 200,
-    "z": 200
-  },
-  {
-    "x": 120,
-    "y": 100,
-    "z": 260
-  },
-  {
-    "x": 170,
-    "y": 300,
-    "z": 400
-  },
-  {
-    "x": 140,
-    "y": 250,
-    "z": 280
-  },
-  {
-    "x": 150,
-    "y": 400,
-    "z": 500
-  },
-  {
-    "x": 110,
-    "y": 280,
-    "z": 200
-  }
-];
-const data02 = [
-  {
-    "x": 200,
-    "y": 260,
-    "z": 240
-  },
-  {
-    "x": 240,
-    "y": 290,
-    "z": 220
-  },
-  {
-    "x": 190,
-    "y": 290,
-    "z": 250
-  },
-  {
-    "x": 198,
-    "y": 250,
-    "z": 210
-  },
-  {
-    "x": 180,
-    "y": 280,
-    "z": 260
-  },
-  {
-    "x": 210,
-    "y": 220,
-    "z": 230
-  }
-];
-const mapDataToChart = (({ marketCap, volume, price, priceChange }) => ({
-  x: marketCap,
+const mapDataToChart = (({ marketCap, volume, priceChange, ...rest }) => ({
   y: volume,
-  z: price * (priceChange / 100)
+  z: Math.abs(priceChange),
+  isZPositive: priceChange >= 0,
+  marketCap,
+  volume,
+  priceChange,
+  ...rest,
 }));
+
 export const Liquidity = () => {
   const { data, isLoading, isError } = useLatestCoins();
-  const chartData = data.map(mapDataToChart).filter((i, inx) => inx < 2);
-  // const rangeMax = Math.max()
-  console.log(chartData);
+  const chartData = data.map(mapDataToChart);
+  const chartDataPos = chartData.filter((i) => i.isZPositive);
+  const chartDataNeg = chartData.filter((i) => !i.isZPositive);
+  if (isLoading) {
+    return <CircularProgress color="inherit" />
+  }
+  if (isError) {
+    return <div>Something went wrong. Come back later</div>
+  }
 
   return (
     <ResponsiveContainer width={1000} height="80%">
-      <ScatterChart width={730} height={250}
-        margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
+      <ScatterChart width={800} height={450}
+        margin={{ top: 20, right: 20, bottom: 10, left: 60 }}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="x" name="market cap" unit="$" />
+        <XAxis dataKey="marketCap" name="market cap" unit="$" />
         <YAxis dataKey="y" name="volume" unit="$" />
-        <ZAxis dataKey="z" range={[-100, 100]} name="score" unit="km" />
-        <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-        <Legend />
-        <Scatter data={chartData} fill="#8884d8" />
+        <ZAxis dataKey="z" name="absoluteChange" unit="$" range={[50,500]}/>
+        <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<CustomTooltip />}  />
+        <Scatter data={chartDataNeg} fill="red" />
+        <Scatter data={chartDataPos} fill="green" />
       </ScatterChart>
     </ResponsiveContainer>
   );
+};
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const item = payload[0].payload;
+    return (
+      <div>
+        <p className="desc">{item.name}</p>
+        <p className="desc">Market cap: {item.marketCap.toFixed()} $</p>
+        <p className="desc">Volume: {item.volume.toFixed()} $</p>
+        <p className="desc">Price change: {item.priceChange.toFixed(2)} %</p>
+      </div>
+    );
+  }
+
+  return null;
 };

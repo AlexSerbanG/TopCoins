@@ -64,19 +64,19 @@ export const MarketOverview = () => {
       },
       {
         Header: 'Price',
-        accessor: 'price',
+        accessor: (rowData) => `$${Number(rowData.price).toFixed(2)}`,
       },
       {
-        Header: 'Price change % (24h)',
-        accessor: 'priceChange',
+        Header: 'Price change (24h)',
+        accessor: (rowData) => `${Number(rowData.priceChange).toFixed(2)}%`,
       },
       {
         Header: 'Market Cap',
-        accessor: 'marketCap',
+        accessor: (rowData) => `$${Number(rowData.marketCap).toFixed()}`,
       },
       {
         Header: 'Volume (24h)',
-        accessor: 'volume',
+        accessor: (rowData) => `$${Number(rowData.volume).toFixed()}`,
       },
     ],
     []
