@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ResponsiveDrawer = (props) => {
-  const { window, children } = props;
+  const { window, children, title } = props;
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
@@ -94,7 +94,7 @@ export const ResponsiveDrawer = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Responsive drawer
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { ResponsiveDrawer } from './components/layout/ResponsiveDrawer';
 import { Routes } from './components/Routes';
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,8 +18,9 @@ function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ResponsiveDrawer >
+        <ResponsiveDrawer title="Top Coins" >
           <Routes />
+          <CssBaseline />
         </ResponsiveDrawer>
       </QueryClientProvider>
     </BrowserRouter>

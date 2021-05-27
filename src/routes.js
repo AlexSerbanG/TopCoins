@@ -1,6 +1,6 @@
 import HomeIcon from '@material-ui/icons/Home';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
-import { MarketOverview } from './components/MarketOverview';
+import { MarketOverview } from './components/MarketOverview/MarketOverview';
 
 export const routes = [{
   path: '/',
