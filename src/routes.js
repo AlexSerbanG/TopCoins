@@ -1,5 +1,6 @@
 import HomeIcon from '@material-ui/icons/Home';
 import ShowChartIcon from '@material-ui/icons/ShowChart';
+import { Liquidity } from './components/Liquidity/Liquidity';
 import { MarketOverview } from './components/MarketOverview/MarketOverview';
 
 export const routes = [{
@@ -12,7 +13,7 @@ export const routes = [{
 {
   path: '/liquidity ',
   label: 'Liquidity',
-  component: () => <div>Test</div>,
+  component: Liquidity,
   exact: true,
   icon: <ShowChartIcon />
 }

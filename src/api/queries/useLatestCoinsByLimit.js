@@ -5,7 +5,7 @@ export const getUseLatestCoinsQueryKey = (limit) => [
   limit
 ];
 
-export const useLatestCoins = ({ limit } = { limit: 100 }, queryConfig) => useQuery(
+export const useLatestCoinsByLimit = ({ limit } = { limit: 100 }, queryConfig) => useQuery(
   getUseLatestCoinsQueryKey(limit),
   async () => {
     const resp = await fetch(`/cryptocurrency/listings/latest?limit=${limit}`, {

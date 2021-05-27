@@ -120,6 +120,8 @@ export const ResponsiveDrawer = (props) => {
             }}
           >
             <DrawerNav />
+            <Divider />
+            <ResultSizeSelector />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
