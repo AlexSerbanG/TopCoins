@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
-export const getUseLatestCoinsQueryKey = ({ limit }) => [
-  'getLatestCoints',
+export const getUseLatestCoinsQueryKey = (limit) => [
+  'getLatestCoins',
   limit
 ];
 

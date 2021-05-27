@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { useLatestCoins } from '../../api/queries/useLatestCoins';
 import { CircularProgress } from '@material-ui/core';
+import { ResultSizeContext } from '../contexts/ResultSizeContext';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -52,7 +53,8 @@ function Table({ columns, data }) {
 const defaultCurrency = "USD";
 
 export const MarketOverview = () => {
-  const { data, isLoading, isError } = useLatestCoins({ limit: 100 }, { placeholderData: { data: [] } });
+  const { resultsSize } = React.useContext(ResultSizeContext);
+  const { data, isLoading, isError } = useLatestCoins({ limit: resultsSize }, { placeholderData: { data: [] } });
   const tableData = React.useMemo(() => data?.data?.map(
     ({ id, name, cmc_rank, quote }) => {
       const { price, percent_change_24h, market_cap, volume_24h } = quote[defaultCurrency];
