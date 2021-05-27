@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { routes } from '../../routes';
 import { useHistory } from 'react-router-dom';
+import { ResultSizeSelector } from './ResultsSizeSelector';
 
 const drawerWidth = 240;
 
@@ -51,18 +52,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ResponsiveDrawer = (props) => {
-  const { window, children, title } = props;
+const DrawerNav = () => {
   const history = useHistory();
   const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
+  return (
     <div>
       <div className={classes.toolbar} />
       <Divider />
@@ -76,6 +70,17 @@ export const ResponsiveDrawer = (props) => {
       </List>
     </div>
   );
+};
+
+export const ResponsiveDrawer = (props) => {
+  const { window, children, title } = props;
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -114,7 +119,7 @@ export const ResponsiveDrawer = (props) => {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            {drawer}
+            <DrawerNav />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -125,7 +130,9 @@ export const ResponsiveDrawer = (props) => {
             variant="permanent"
             open
           >
-            {drawer}
+            <DrawerNav />
+            <Divider />
+            <ResultSizeSelector />
           </Drawer>
         </Hidden>
       </nav>
